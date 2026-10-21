@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="Layout(content)">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="_csrf" th:if="${_csrf}" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:if="${_csrf}" th:content="${_csrf.headerName}"/>
+    <title th:text="${title} ?: 'SmartContactManager'">SmartContactManager</title>
+    <link rel="icon" type="image/svg+xml" th:href="@{/img/favicon.svg}">
+    <link rel="stylesheet" th:href="@{/vendor/bootstrap/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="public">
+<nav class="navbar navbar-expand-lg public-nav sticky-top">
+    <a class="navbar-brand" th:href="@{/}">
+        <span class="brand-mark"><svg th:replace="~{fragments :: icon('book-open')}"></svg></span>
+        SmartContactManager
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#publicNav"
+            aria-controls="publicNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="publicNav">
+        <ul class="navbar-nav ml-auto align-items-lg-center">
+            <li class="nav-item"><a class="nav-link" th:href="@{/}">Home</a></li>
+            <li class="nav-item"><a class="nav-link" th:href="@{/about}">About</a></li>
+            <li class="nav-item"><a class="nav-link" th:href="@{/signin}">Login</a></li>
+            <li class="nav-item"><a class="nav-link nav-cta" th:href="@{/signup}">Sign up</a></li>
+        </ul>
+    </div>
+</nav>
+
+<main class="public-main">
+    <div th:replace="${content}"></div>
+</main>
+
+<footer class="public-footer">&copy; SmartContactManager. Your contacts, kept safe and in order.</footer>
+
+<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+<script th:src="@{/vendor/bootstrap/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/script.js}"></script>
+</body>
+</html>

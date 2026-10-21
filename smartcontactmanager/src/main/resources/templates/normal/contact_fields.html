@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<!-- Shared by Add Contact and Edit Contact. Must be included inside a form with th:object="${contactForm}". -->
+<div th:fragment="fields(currentImage)">
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="name">Name <span class="req">*</span></label>
+            <input type="text" id="name" class="form-control" th:field="*{name}" th:errorclass="is-invalid"
+                   placeholder="e.g. Asha Patil" maxlength="50" required autocomplete="off">
+            <div class="field-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="secondname">Nickname</label>
+            <input type="text" id="secondname" class="form-control" th:field="*{secondname}" th:errorclass="is-invalid"
+                   placeholder="e.g. Ashu" maxlength="50" autocomplete="off">
+            <div class="field-error" th:if="${#fields.hasErrors('secondname')}" th:errors="*{secondname}"></div>
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="work">Work / Profession</label>
+            <input type="text" id="work" class="form-control" th:field="*{work}" th:errorclass="is-invalid"
+                   placeholder="e.g. Architect, Studio North" maxlength="100" autocomplete="off">
+            <div class="field-error" th:if="${#fields.hasErrors('work')}" th:errors="*{work}"></div>
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" class="form-control" th:field="*{email}" th:errorclass="is-invalid"
+                   placeholder="name@example.com" maxlength="100" autocomplete="off">
+            <div class="field-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="phone">Phone <span class="req">*</span></label>
+            <input type="tel" id="phone" class="form-control" th:field="*{phone}" th:errorclass="is-invalid"
+                   placeholder="+91 98765 43210" inputmode="tel" pattern="\+?[0-9][0-9 ()\-]{6,19}" maxlength="20" required autocomplete="off"
+                   title="7 to 20 digits; may start with + and contain spaces, brackets or hyphens">
+            <div class="field-error" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
+        </div>
+        <div class="col-md-6 form-group">
+            <label for="profileImage">Photo</label>
+            <div class="photo-upload">
+                <img th:replace="~{fragments :: avatar(${currentImage}, 'avatar', 'Contact photo preview')}">
+                <div>
+                    <input type="file" id="profileImage" name="profileImage" class="form-control-file"
+                           accept="image/jpeg,image/png,image/gif,image/webp" data-preview data-max-bytes="2097152">
+                    <div class="field-hint">JPG, PNG, GIF or WebP, up to 2 MB.</div>
+                </div>
+            </div>
+            <div class="field-error" th:if="${photoError != null}" th:text="${photoError}"></div>
+        </div>
+        <div class="col-12 form-group">
+            <label for="description">Description</label>
+            <textarea id="description" class="form-control" th:field="*{description}" th:errorclass="is-invalid"
+                      rows="4" maxlength="2000" placeholder="Notes about this contact"></textarea>
+            <div class="field-error" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

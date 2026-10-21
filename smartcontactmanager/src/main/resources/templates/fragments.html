@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!-- Feather icon from the local sprite: <svg th:replace="~{fragments :: icon('users')}"></svg> -->
+<svg th:fragment="icon(name)" class="icon" aria-hidden="true" focusable="false">
+    <use th:href="@{/img/feather-sprite.svg} + '#' + ${name}"></use>
+</svg>
+
+<!-- Contact / user photo with a graceful fallback avatar (also used for legacy /img/ files). -->
+<img th:fragment="avatar(image, cssClass, alt)"
+     th:class="${cssClass}"
+     th:alt="${alt}"
+     th:src="${#strings.isEmpty(image) or image == 'default.png' or image == 'contact.png'} ? @{/img/avatar-default.svg} : @{/user-photos/{f}(f=${image})}"
+     th:data-fallback="@{/img/avatar-default.svg}"
+     th:data-legacy="${#strings.isEmpty(image)} ? '' : @{/img/{f}(f=${image})}"
+     onerror="avatarFallback(this)"
+     loading="lazy" src="#" alt="Avatar">
+
+<!-- Flash / model message. msg is a com.smart.helper.Message (type: success | danger | warning | info). -->
+<div th:fragment="flash(msg)" th:if="${msg != null}" class="flash alert" th:classappend="'alert-' + ${msg.type}" role="alert">
+    <svg th:replace="~{fragments :: icon(${msg.type == 'success'} ? 'check-circle' : 'alert-circle')}"></svg>
+    <span th:text="${msg.content}">Message</span>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+</div>
+
+<!-- Password input with a show/hide button. -->
+<div th:fragment="password(id, name, label, autocomplete)" class="form-group">
+    <label th:for="${id}" th:text="${label}">Password</label>
+    <div class="password-field">
+        <input type="password" class="form-control" th:id="${id}" th:name="${name}"
+               th:autocomplete="${autocomplete}" required>
+        <button type="button" class="password-toggle" th:data-toggle-password="'#' + ${id}" aria-label="Show or hide password">
+            <svg th:replace="~{fragments :: icon('eye')}"></svg>
+            <svg th:replace="~{fragments :: icon('eye-off')}"></svg>
+        </button>
+    </div>
+</div>
+
+</body>
+</html>

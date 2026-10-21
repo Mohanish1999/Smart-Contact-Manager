@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{normal/base :: Layout(~{::section})}">
+<head><title>Edit profile</title></head>
+<body>
+<section>
+    <div class="page-header">
+        <div><h1>Edit profile</h1><p>Your email is your login and cannot be changed here.</p></div>
+        <a class="btn btn-outline-secondary" th:href="@{/user/profile}"><svg th:replace="~{fragments :: icon('arrow-left')}"></svg>Back to profile</a>
+    </div>
+
+    <div class="card-lite pad form-card">
+        <form th:action="@{/user/profile/edit}" th:object="${profileForm}" method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    <label for="name">Name <span class="req">*</span></label>
+                    <input type="text" id="name" class="form-control" th:field="*{name}" th:errorclass="is-invalid" maxlength="50" required>
+                    <div class="field-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label for="emailShown">Email</label>
+                    <input type="email" id="emailShown" class="form-control" th:value="${currentUser.email}" disabled>
+                </div>
+                <div class="col-12 form-group">
+                    <label for="about">About</label>
+                    <textarea id="about" class="form-control" th:field="*{about}" th:errorclass="is-invalid" rows="4" maxlength="500"></textarea>
+                    <div class="field-error" th:if="${#fields.hasErrors('about')}" th:errors="*{about}"></div>
+                </div>
+                <div class="col-12 form-group">
+                    <label for="profileImage">Profile photo</label>
+                    <div class="photo-upload">
+                        <img th:replace="~{fragments :: avatar(${currentUser.imageurl}, 'avatar', 'Photo preview')}">
+                        <div>
+                            <input type="file" id="profileImage" name="profileImage" class="form-control-file"
+                                   accept="image/jpeg,image/png,image/gif,image/webp" data-preview data-max-bytes="2097152">
+                            <div class="field-hint">JPG, PNG, GIF or WebP, up to 2 MB. Leave empty to keep your current photo.</div>
+                        </div>
+                    </div>
+                    <div class="field-error" th:if="${photoError != null}" th:text="${photoError}"></div>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary"><svg th:replace="~{fragments :: icon('check-circle')}"></svg>Save changes</button>
+                <a class="btn btn-outline-secondary" th:href="@{/user/profile}">Cancel</a>
+            </div>
+        </form>
+    </div>
+</section>
+</body>
+</html>

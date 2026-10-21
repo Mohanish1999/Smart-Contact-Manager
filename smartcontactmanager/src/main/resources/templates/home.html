@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base :: Layout(~{::section})}">
+<head><title>Home</title></head>
+<body>
+<section>
+    <div class="container hero">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="eyebrow mb-2">Contact management, refined</div>
+                <h1>Every contact, <span>beautifully organised.</span></h1>
+                <p class="lead">Keep the people who matter in one secure, elegant place. Add, search and update your contacts in seconds, from any device.</p>
+                <div class="mt-4">
+                    <a class="btn btn-primary btn-lg mr-2 mb-2" th:href="@{/signup}">Get started</a>
+                    <a class="btn btn-outline-primary btn-lg mb-2" th:href="@{/signin}">Log in</a>
+                </div>
+            </div>
+            <div class="col-lg-6 mt-4 mt-lg-0 text-center">
+                <img th:src="@{/img/illustration-contacts.svg}" alt="An address book with contact cards">
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-md-4 mb-3">
+                <div class="card-lite feature hover-lift">
+                    <span class="feature-icon"><svg th:replace="~{fragments :: icon('users')}"></svg></span>
+                    <h3>All your people</h3>
+                    <p class="text-muted mb-0">Names, numbers, emails, work details and photos, neatly arranged on clean contact cards.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card-lite feature hover-lift">
+                    <span class="feature-icon"><svg th:replace="~{fragments :: icon('search')}"></svg></span>
+                    <h3>Find anyone fast</h3>
+                    <p class="text-muted mb-0">Search by name, nickname, email, phone or work and jump straight to the right contact.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card-lite feature hover-lift">
+                    <span class="feature-icon"><svg th:replace="~{fragments :: icon('shield')}"></svg></span>
+                    <h3>Private and secure</h3>
+                    <p class="text-muted mb-0">Your contacts belong to you alone. Passwords are hashed and every action is protected.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

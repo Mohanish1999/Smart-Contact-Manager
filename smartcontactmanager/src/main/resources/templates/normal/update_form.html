@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{normal/base :: Layout(~{::section})}">
+<head><title>Edit contact</title></head>
+<body>
+<section>
+    <div class="page-header">
+        <div>
+            <h1>Edit contact</h1>
+            <p>Update the details of <strong th:text="${contact.name}">this contact</strong>.</p>
+        </div>
+        <a class="btn btn-outline-secondary" th:href="@{/user/{id}/contact(id=${contact.cid})}"><svg th:replace="~{fragments :: icon('arrow-left')}"></svg>Back to contact</a>
+    </div>
+
+    <div class="card-lite pad form-card">
+        <form th:action="@{/user/update-contact/{id}(id=${contact.cid})}" th:object="${contactForm}" method="post" enctype="multipart/form-data">
+            <div th:replace="~{normal/contact_fields :: fields(${contact.image})}"></div>
+            <div class="field-hint mb-2">Leave the photo field empty to keep the current photo.</div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary"><svg th:replace="~{fragments :: icon('check-circle')}"></svg>Save changes</button>
+                <a class="btn btn-outline-secondary" th:href="@{/user/{id}/contact(id=${contact.cid})}">Cancel</a>
+            </div>
+        </form>
+    </div>
+</section>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{normal/base :: Layout(~{::section})}">
+<head><title>Add contact</title></head>
+<body>
+<section>
+    <div class="page-header">
+        <div>
+            <h1>Add contact</h1>
+            <p>Fields marked <span class="req">*</span> are required.</p>
+        </div>
+        <a class="btn btn-outline-secondary" th:href="@{/user/show-contacts}"><svg th:replace="~{fragments :: icon('arrow-left')}"></svg>Back to contacts</a>
+    </div>
+
+    <div class="card-lite pad form-card">
+        <form th:action="@{/user/process-contact}" th:object="${contactForm}" method="post" enctype="multipart/form-data">
+            <div th:replace="~{normal/contact_fields :: fields(null)}"></div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary"><svg th:replace="~{fragments :: icon('check-circle')}"></svg>Save contact</button>
+                <a class="btn btn-outline-secondary" th:href="@{/user/show-contacts}">Cancel</a>
+            </div>
+        </form>
+    </div>
+</section>
+</body>
+</html>

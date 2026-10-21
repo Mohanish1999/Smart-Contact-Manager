@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{normal/base :: Layout(~{::section})}">
+<head><title>Your contacts</title></head>
+<body>
+<section>
+    <div class="page-header">
+        <div>
+            <h1>Your contacts</h1>
+            <p th:if="${#strings.isEmpty(q)}"><span th:text="${totalElements}">0</span> in total</p>
+            <p th:unless="${#strings.isEmpty(q)}">
+                <span th:text="${totalElements}">0</span> result(s) for <strong th:text="${q}">query</strong>
+                &middot; <a th:href="@{/user/show-contacts}">Clear search</a>
+            </p>
+        </div>
+        <a class="btn btn-primary" th:href="@{/user/add-contact}"><svg th:replace="~{fragments :: icon('plus')}"></svg>Add contact</a>
+    </div>
+
+    <!-- Empty state -->
+    <div class="card-lite empty-state" th:if="${#lists.isEmpty(contacts)}">
+        <img th:src="@{/img/illustration-contacts.svg}" alt="">
+        <h2 th:if="${#strings.isEmpty(q)}">No contacts yet</h2>
+        <p class="text-muted" th:if="${#strings.isEmpty(q)}">Add your first contact to start building your list.</p>
+        <h2 th:unless="${#strings.isEmpty(q)}">No matching contacts</h2>
+        <p class="text-muted" th:unless="${#strings.isEmpty(q)}">Try a different name, email or phone number.</p>
+        <a class="btn btn-primary" th:if="${#strings.isEmpty(q)}" th:href="@{/user/add-contact}"><svg th:replace="~{fragments :: icon('plus')}"></svg>Add your first contact</a>
+        <a class="btn btn-outline-primary" th:unless="${#strings.isEmpty(q)}" th:href="@{/user/show-contacts}">Show all contacts</a>
+    </div>
+
+    <!-- Contact cards -->
+    <div class="row" th:unless="${#lists.isEmpty(contacts)}">
+        <div class="col-sm-6 col-xl-4 mb-4" th:each="c : ${contacts}">
+            <div class="card-lite contact-card hover-lift">
+                <div class="head">
+                    <img th:replace="~{fragments :: avatar(${c.image}, 'avatar', ${c.name})}">
+                    <div style="min-width:0">
+                        <h2 class="name" th:text="${c.name}">Name</h2>
+                        <div class="nick" th:if="${c.secondname}" th:text="${c.secondname}">Nickname</div>
+                    </div>
+                </div>
+                <ul class="info">
+                    <li th:if="${c.email}"><svg th:replace="~{fragments :: icon('mail')}"></svg><span th:text="${c.email}">email</span></li>
+                    <li th:if="${c.phone}"><svg th:replace="~{fragments :: icon('phone')}"></svg><span th:text="${c.phone}">phone</span></li>
+                    <li th:if="${c.work}"><svg th:replace="~{fragments :: icon('briefcase')}"></svg><span th:text="${c.work}">work</span></li>
+                </ul>
+                <div class="actions">
+                    <a class="btn btn-outline-primary" th:href="@{/user/{id}/contact(id=${c.cid})}" title="View"><svg th:replace="~{fragments :: icon('eye')}"></svg><span>View</span></a>
+                    <a class="btn btn-outline-secondary" th:href="@{/user/update-contact/{id}(id=${c.cid})}" title="Edit"><svg th:replace="~{fragments :: icon('edit-2')}"></svg><span>Edit</span></a>
+                    <form th:action="@{/user/delete/{id}(id=${c.cid})}" method="post" class="ml-auto"
+                          data-confirm data-confirm-title="Delete this contact?"
+                          th:attr="data-confirm-text='This will permanently delete ' + ${c.name} + '. This cannot be undone.'">
+                        <button type="submit" class="btn btn-outline-danger" title="Delete" aria-label="Delete contact"><svg th:replace="~{fragments :: icon('trash-2')}"></svg><span>Delete</span></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pagination (only when there is more than one page) -->
+    <nav aria-label="Contact pages" th:if="${totalPages > 1}" th:with="qs=${#strings.isEmpty(q)} ? '' : '?q=' + ${#uris.escapeQueryParam(q)}">
+        <ul class="pagination">
+            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                <a class="page-link" th:if="${currentPage > 0}" th:href="@{/user/show-contacts/{p}(p=${currentPage - 1})} + ${qs}">Previous</a>
+                <span class="page-link" th:unless="${currentPage > 0}">Previous</span>
+            </li>
+            <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == currentPage} ? 'active'">
+                <a class="page-link" th:href="@{/user/show-contacts/{p}(p=${i})} + ${qs}" th:text="${i + 1}"
+                   th:attr="aria-current=${i == currentPage} ? 'page' : null">1</a>
+            </li>
+            <li class="page-item" th:classappend="${currentPage >= totalPages - 1} ? 'disabled'">
+                <a class="page-link" th:if="${currentPage < totalPages - 1}" th:href="@{/user/show-contacts/{p}(p=${currentPage + 1})} + ${qs}">Next</a>
+                <span class="page-link" th:unless="${currentPage < totalPages - 1}">Next</span>
+            </li>
+        </ul>
+    </nav>
+</section>
+</body>
+</html>

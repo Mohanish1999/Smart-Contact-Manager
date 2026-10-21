@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{normal/base :: Layout(~{::section})}">
+<head><title>Your profile</title></head>
+<body>
+<section>
+    <div class="page-header">
+        <div><h1>Your profile</h1><p>The details of your account.</p></div>
+    </div>
+
+    <div class="card-lite form-card">
+        <div class="pad text-center" style="border-bottom: 1px solid var(--line);">
+            <img th:replace="~{fragments :: avatar(${currentUser.imageurl}, 'avatar avatar-lg', 'Your photo')}">
+            <h2 class="mt-3 mb-1" th:text="${currentUser.name}">Name</h2>
+            <div class="text-muted mb-2" th:text="${currentUser.email}">email</div>
+            <span class="badge-role" th:text="${#strings.replace(currentUser.role, 'ROLE_', '')}">USER</span>
+        </div>
+        <div class="card-body-pad">
+            <div class="detail-row">
+                <svg th:replace="~{fragments :: icon('user')}"></svg>
+                <div><div class="k">Name</div><div class="v" th:text="${currentUser.name}">Name</div></div>
+            </div>
+            <div class="detail-row">
+                <svg th:replace="~{fragments :: icon('mail')}"></svg>
+                <div><div class="k">Email</div><div class="v" th:text="${currentUser.email}">email</div></div>
+            </div>
+            <div class="detail-row">
+                <svg th:replace="~{fragments :: icon('shield')}"></svg>
+                <div><div class="k">Role</div><div class="v" th:text="${#strings.replace(currentUser.role, 'ROLE_', '')}">USER</div></div>
+            </div>
+            <div class="detail-row">
+                <svg th:replace="~{fragments :: icon('users')}"></svg>
+                <div><div class="k">Contacts</div><div class="v" th:text="${contactCount}">0</div></div>
+            </div>
+            <div class="detail-row">
+                <svg th:replace="~{fragments :: icon('info')}"></svg>
+                <div><div class="k">About</div>
+                    <div class="v" th:if="${currentUser.about}" th:text="${currentUser.about}">About</div>
+                    <div class="v text-muted" th:unless="${currentUser.about}">Nothing here yet.</div></div>
+            </div>
+            <div class="form-actions">
+                <a class="btn btn-primary" th:href="@{/user/profile/edit}"><svg th:replace="~{fragments :: icon('edit-2')}"></svg>Edit profile</a>
+                <a class="btn btn-outline-secondary" th:href="@{/user/setting}"><svg th:replace="~{fragments :: icon('settings')}"></svg>Settings</a>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

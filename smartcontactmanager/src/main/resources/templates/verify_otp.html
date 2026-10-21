@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base :: Layout(~{::section})}">
+<head><title>Verify code</title></head>
+<body>
+<section class="auth-split">
+    <div class="container">
+        <div class="auth-card card-lite solo">
+            <h1 class="title">Enter your code</h1>
+            <p class="sub">Type the 6-digit code from your email. It expires in 5 minutes.</p>
+
+            <div th:replace="~{fragments :: flash(${message})}"></div>
+
+            <form th:action="@{/verify-otp}" method="post">
+                <div class="form-group">
+                    <label for="otp">One-time code</label>
+                    <input type="text" id="otp" name="otp" class="form-control text-center" inputmode="numeric"
+                           pattern="[0-9]{6}" maxlength="6" autocomplete="one-time-code" placeholder="000000"
+                           style="letter-spacing: .5em; font-size: 1.3rem;" required autofocus>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Verify code</button>
+            </form>
+            <hr>
+            <p class="auth-links">Did not get it? <a th:href="@{/forgot}">Request a new code</a></p>
+        </div>
+    </div>
+</section>
+</body>
+</html>

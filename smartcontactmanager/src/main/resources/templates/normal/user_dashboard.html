@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{normal/base :: Layout(~{::section})}">
+<head><title>Dashboard</title></head>
+<body>
+<section>
+    <!-- Welcome -->
+    <div class="welcome">
+        <h1>Welcome back, <span th:text="${currentUser != null} ? ${currentUser.name} : 'there'">there</span></h1>
+        <p th:if="${stats.totalContacts == 0}">Your contact book is empty. Add your first contact to get started.</p>
+        <p th:unless="${stats.totalContacts == 0}">You are keeping <strong th:text="${stats.totalContacts}">0</strong> contact(s) organised and safe.</p>
+        <div class="actions">
+            <a class="btn btn-gold" th:href="@{/user/add-contact}"><svg th:replace="~{fragments :: icon('user-plus')}"></svg>Add contact</a>
+            <a class="btn btn-outline-light" th:href="@{/user/show-contacts}"><svg th:replace="~{fragments :: icon('users')}"></svg>View all contacts</a>
+        </div>
+    </div>
+
+    <!-- Statistics (real numbers from the database) -->
+    <div class="row mb-4">
+        <div class="col-md-4 mb-3 mb-md-0">
+            <div class="card-lite stat-card">
+                <span class="stat-icon"><svg th:replace="~{fragments :: icon('users')}"></svg></span>
+                <div><div class="value" th:text="${stats.totalContacts}">0</div><div class="label">Total contacts</div></div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3 mb-md-0">
+            <div class="card-lite stat-card">
+                <span class="stat-icon"><svg th:replace="~{fragments :: icon('mail')}"></svg></span>
+                <div><div class="value" th:text="${stats.withEmail}">0</div><div class="label">With an email address</div></div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card-lite stat-card">
+                <span class="stat-icon"><svg th:replace="~{fragments :: icon('camera')}"></svg></span>
+                <div><div class="value" th:text="${stats.withPhoto}">0</div><div class="label">With a photo</div></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Recently added -->
+        <div class="col-lg-7 mb-4">
+            <div class="card-lite h-100">
+                <div class="card-head">
+                    <h2>Recently added</h2>
+                    <a th:href="@{/user/show-contacts}">See all</a>
+                </div>
+                <div th:if="${#lists.isEmpty(stats.recent)}" class="card-body-pad text-center text-muted">
+                    <p class="mb-3">No contacts yet.</p>
+                    <a class="btn btn-primary btn-sm" th:href="@{/user/add-contact}">Add a contact</a>
+                </div>
+                <a class="recent-item" th:each="c : ${stats.recent}" th:href="@{/user/{id}/contact(id=${c.cid})}">
+                    <img th:replace="~{fragments :: avatar(${c.image}, 'avatar avatar-sm', ${c.name})}">
+                    <span class="meta">
+                        <span class="name" th:text="${c.name}">Name</span>
+                        <small th:text="${c.email != null} ? ${c.email} : ${c.phone}">email</small>
+                    </span>
+                    <svg th:replace="~{fragments :: icon('chevron-right')}"></svg>
+                </a>
+            </div>
+        </div>
+
+        <!-- Razorpay donation card (flow documented in RAZORPAY_SETUP.md) -->
+        <div class="col-lg-5 mb-4">
+            <div class="card-lite h-100 text-center donation-card">
+                <div class="card-body-pad">
+                    <img th:src="@{/img/donation.png}" class="donation-art mb-2" alt="">
+                    <h2 class="h4">Support this project</h2>
+                    <p class="text-muted">Every contribution makes a difference. Pick an amount or enter your own.</p>
+
+                    <div class="donation-chips" role="group" aria-label="Choose a donation amount">
+                        <button type="button" class="donation-chip" onclick="selectDonationAmount(100, this)">&#8377;100</button>
+                        <button type="button" class="donation-chip" onclick="selectDonationAmount(250, this)">&#8377;250</button>
+                        <button type="button" class="donation-chip" onclick="selectDonationAmount(500, this)">&#8377;500</button>
+                        <button type="button" class="donation-chip" onclick="selectDonationAmount(1000, this)">&#8377;1,000</button>
+                    </div>
+
+                    <div class="input-group mt-3">
+                        <div class="input-group-prepend"><span class="input-group-text">&#8377;</span></div>
+                        <input id="payment_field" type="number" name="amount" class="form-control" placeholder="Custom amount"
+                               aria-label="Custom donation amount in rupees" min="1" step="1" inputmode="numeric"
+                               oninput="onDonationAmountTyped()">
+                    </div>
+
+                    <div id="donation-status" class="d-none" role="status" aria-live="polite"></div>
+
+                    <button id="donate-btn" type="button" class="btn btn-primary btn-block mt-3" onclick="paymentStart()">
+                        <span class="spinner-border spinner-border-sm mr-1 d-none" role="status" aria-hidden="true"></span>
+                        <span class="donate-label">Donate Now</span>
+                    </button>
+                    <small class="text-muted d-block mt-2">Secure checkout by Razorpay &middot; UPI, cards, net banking &amp; wallets</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

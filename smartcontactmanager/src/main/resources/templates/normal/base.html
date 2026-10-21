@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="Layout(content)">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="_csrf" th:if="${_csrf}" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:if="${_csrf}" th:content="${_csrf.headerName}"/>
+    <title th:text="${title} ?: 'SmartContactManager'">SmartContactManager</title>
+    <link rel="icon" type="image/svg+xml" th:href="@{/img/favicon.svg}">
+    <link rel="stylesheet" th:href="@{/vendor/bootstrap/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="app">
+
+<aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <a class="brand" th:href="@{/user/index}">
+        <span class="brand-mark"><svg th:replace="~{fragments :: icon('book-open')}"></svg></span>
+        SmartContactManager
+    </a>
+    <nav>
+        <div class="nav-label">Menu</div>
+        <a class="item" th:href="@{/user/index}" data-match="^/user/index$">
+            <svg th:replace="~{fragments :: icon('home')}"></svg> Dashboard</a>
+        <a class="item" th:href="@{/user/show-contacts}" data-match="^/user/(show-contacts|update-contact|[0-9]+/contact)">
+            <svg th:replace="~{fragments :: icon('users')}"></svg> Contacts</a>
+        <a class="item" th:href="@{/user/add-contact}" data-match="^/user/add-contact">
+            <svg th:replace="~{fragments :: icon('user-plus')}"></svg> Add Contact</a>
+        <div class="nav-label">Account</div>
+        <a class="item" th:href="@{/user/profile}" data-match="^/user/profile">
+            <svg th:replace="~{fragments :: icon('user')}"></svg> Profile</a>
+        <a class="item" th:href="@{/user/setting}" data-match="^/user/setting">
+            <svg th:replace="~{fragments :: icon('settings')}"></svg> Settings</a>
+    </nav>
+    <div class="sidebar-foot">
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="item">
+                <svg th:replace="~{fragments :: icon('log-out')}"></svg> Log out</button>
+        </form>
+    </div>
+</aside>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<div class="app-main">
+    <header class="topbar">
+        <button type="button" class="menu-toggle" id="menu-toggle" aria-label="Open menu" aria-controls="sidebar">
+            <svg th:replace="~{fragments :: icon('menu')}"></svg>
+        </button>
+
+        <form class="search-box" th:action="@{/user/show-contacts}" method="get" role="search" autocomplete="off">
+            <svg th:replace="~{fragments :: icon('search')}"></svg>
+            <input type="search" name="q" id="global-search" class="form-control" maxlength="100"
+                   placeholder="Search contacts by name, email or phone" aria-label="Search contacts">
+            <div class="suggestions" id="search-suggestions" role="listbox"></div>
+        </form>
+
+        <a class="user-chip" th:href="@{/user/profile}" th:if="${currentUser != null}">
+            <span class="user-name" th:text="${currentUser.name}">User</span>
+            <img th:replace="~{fragments :: avatar(${currentUser.imageurl}, 'avatar avatar-sm', 'Your photo')}">
+        </a>
+    </header>
+
+    <main class="app-content">
+        <div th:replace="~{fragments :: flash(${message})}"></div>
+        <div th:replace="${content}"></div>
+    </main>
+</div>
+
+<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+<script th:src="@{/vendor/bootstrap/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/vendor/sweetalert2/sweetalert2.all.min.js}"></script>
+<!-- Razorpay Checkout must be loaded from Razorpay's own server -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script th:src="@{/js/script.js}"></script>
+</body>
+</html>

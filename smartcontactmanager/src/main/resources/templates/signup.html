@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base :: Layout(~{::section})}">
+<head><title>Register</title></head>
+<body>
+<section class="auth-split">
+    <div class="container">
+        <div class="auth-card card-lite solo" style="max-width: 560px;">
+            <h1 class="title">Create your account</h1>
+            <p class="sub">It only takes a minute.</p>
+
+            <div th:replace="~{fragments :: flash(${message})}"></div>
+
+            <form th:action="@{/user/do_register}" th:object="${user}" method="post" novalidate>
+                <div class="form-group">
+                    <label for="name">Full name</label>
+                    <input type="text" id="name" class="form-control" th:field="*{name}" th:errorclass="is-invalid"
+                           placeholder="Your full name" maxlength="50" autocomplete="name">
+                    <div class="field-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email address</label>
+                    <input type="email" id="email" class="form-control" th:field="*{email}" th:errorclass="is-invalid"
+                           placeholder="you@example.com" autocomplete="email">
+                    <div class="field-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="password-field">
+                        <input type="password" id="password" class="form-control" th:field="*{password}" th:errorclass="is-invalid"
+                               placeholder="Create a password" autocomplete="new-password">
+                        <button type="button" class="password-toggle" data-toggle-password="#password" aria-label="Show or hide password">
+                            <svg th:replace="~{fragments :: icon('eye')}"></svg>
+                            <svg th:replace="~{fragments :: icon('eye-off')}"></svg>
+                        </button>
+                    </div>
+                    <div class="field-hint" th:text="${passwordHint} ?: 'Use at least 8 characters, including a letter and a number.'"></div>
+                    <div class="field-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+                </div>
+                <div class="form-group">
+                    <label for="about">About you <span class="text-muted">(optional)</span></label>
+                    <textarea id="about" class="form-control" th:field="*{about}" th:errorclass="is-invalid" rows="3" maxlength="500"
+                              placeholder="A short line about yourself"></textarea>
+                    <div class="field-error" th:if="${#fields.hasErrors('about')}" th:errors="*{about}"></div>
+                </div>
+                <div class="custom-control custom-checkbox mb-3">
+                    <input type="checkbox" class="custom-control-input" name="agreement" id="terms" value="true">
+                    <label class="custom-control-label" for="terms">I accept the Terms &amp; Conditions</label>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Create account</button>
+            </form>
+            <hr>
+            <p class="auth-links">Already registered? <a th:href="@{/signin}">Log in</a></p>
+        </div>
+    </div>
+</section>
+</body>
+</html>

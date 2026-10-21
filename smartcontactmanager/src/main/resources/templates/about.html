@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base :: Layout(~{::section})}">
+<head><title>About</title></head>
+<body>
+<section>
+    <div class="container py-5" style="max-width: 820px;">
+        <div class="eyebrow mb-2">About</div>
+        <h1 class="mb-3">A calm place for your contacts</h1>
+        <p class="lead text-muted">SmartContactManager helps you keep every contact organised, searchable and private.</p>
+        <div class="card-lite pad mt-4">
+            <div class="row">
+                <div class="col-md-6 mb-3 mb-md-0">
+                    <h3 class="h5">What you can do</h3>
+                    <p class="text-muted mb-0">Add contacts with photos, edit them at any time, search your list and browse it page by page.</p>
+                </div>
+                <div class="col-md-6">
+                    <h3 class="h5">How it protects you</h3>
+                    <p class="text-muted mb-0">Each account sees only its own contacts. Passwords are stored as hashes and password recovery uses one-time codes sent by email.</p>
+                </div>
+            </div>
+        </div>
+        <p class="mt-4"><a class="btn btn-primary" th:href="@{/signup}">Create your account</a></p>
+    </div>
+</section>
+</body>
+</html>

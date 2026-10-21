@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{normal/base :: Layout(~{::section})}">
+<head><title>Settings</title></head>
+<body>
+<section>
+    <div class="page-header">
+        <div><h1>Settings</h1><p>Manage the security of your account.</p></div>
+    </div>
+
+    <!-- Change password -->
+    <div class="card-lite form-card mb-4" id="change-password">
+        <div class="card-head"><h2><svg th:replace="~{fragments :: icon('key')}"></svg> Change password</h2></div>
+        <div class="card-body-pad">
+            <form th:action="@{/user/change-password}" th:object="${changePasswordForm}" method="post">
+                <div class="form-group">
+                    <label for="currentPassword">Current password</label>
+                    <div class="password-field">
+                        <input type="password" id="currentPassword" class="form-control" th:field="*{currentPassword}" th:errorclass="is-invalid" autocomplete="current-password" required>
+                        <button type="button" class="password-toggle" data-toggle-password="#currentPassword" aria-label="Show or hide password">
+                            <svg th:replace="~{fragments :: icon('eye')}"></svg><svg th:replace="~{fragments :: icon('eye-off')}"></svg>
+                        </button>
+                    </div>
+                    <div class="field-error" th:if="${#fields.hasErrors('currentPassword')}" th:errors="*{currentPassword}"></div>
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">New password</label>
+                    <div class="password-field">
+                        <input type="password" id="newPassword" class="form-control" th:field="*{newPassword}" th:errorclass="is-invalid" autocomplete="new-password" required>
+                        <button type="button" class="password-toggle" data-toggle-password="#newPassword" aria-label="Show or hide password">
+                            <svg th:replace="~{fragments :: icon('eye')}"></svg><svg th:replace="~{fragments :: icon('eye-off')}"></svg>
+                        </button>
+                    </div>
+                    <div class="field-hint" th:text="${passwordHint}">Password rules</div>
+                    <div class="field-error" th:if="${#fields.hasErrors('newPassword')}" th:errors="*{newPassword}"></div>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm new password</label>
+                    <div class="password-field">
+                        <input type="password" id="confirmPassword" class="form-control" th:field="*{confirmPassword}" th:errorclass="is-invalid" autocomplete="new-password" required>
+                        <button type="button" class="password-toggle" data-toggle-password="#confirmPassword" aria-label="Show or hide password">
+                            <svg th:replace="~{fragments :: icon('eye')}"></svg><svg th:replace="~{fragments :: icon('eye-off')}"></svg>
+                        </button>
+                    </div>
+                    <div class="field-error" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary"><svg th:replace="~{fragments :: icon('lock')}"></svg>Update password</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Danger zone -->
+    <div class="card-lite form-card danger-zone">
+        <div class="card-head"><h2>Delete account</h2></div>
+        <div class="card-body-pad">
+            <p class="text-muted">This permanently deletes your account and all of your contacts. Donation records are kept without your name attached. This cannot be undone.</p>
+            <form th:action="@{/user/account/delete}" method="post"
+                  data-confirm data-confirm-title="Delete your account?"
+                  data-confirm-text="All your contacts will be deleted permanently.">
+                <div th:replace="~{fragments :: password('deletePassword', 'currentPassword', 'Confirm with your password', 'current-password')}"></div>
+                <button type="submit" class="btn btn-danger"><svg th:replace="~{fragments :: icon('trash-2')}"></svg>Delete my account</button>
+            </form>
+        </div>
+    </div>
+</section>
+</body>
+</html>

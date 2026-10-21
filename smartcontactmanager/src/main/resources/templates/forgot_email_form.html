@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base :: Layout(~{::section})}">
+<head><title>Forgot password</title></head>
+<body>
+<section class="auth-split">
+    <div class="container">
+        <div class="auth-card card-lite solo">
+            <h1 class="title">Forgot your password?</h1>
+            <p class="sub">Enter the email you registered with and we will send you a 6-digit code.</p>
+
+            <div th:replace="~{fragments :: flash(${message})}"></div>
+
+            <form th:action="@{/send-otp}" method="post">
+                <div class="form-group">
+                    <label for="email">Registered email</label>
+                    <input type="email" id="email" name="email" class="form-control" placeholder="you@example.com"
+                           autocomplete="email" required autofocus>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Send code</button>
+            </form>
+            <hr>
+            <p class="auth-links"><a th:href="@{/signin}">Back to log in</a></p>
+        </div>
+    </div>
+</section>
+</body>
+</html>
